@@ -1,0 +1,13 @@
+diff --git a/node_modules/notion-api-js/dist/lib/fetch.js b/node_modules/notion-api-js/dist/lib/fetch.js
+index 1baefe8..06aaf2a 100644
+--- a/node_modules/notion-api-js/dist/lib/fetch.js
++++ b/node_modules/notion-api-js/dist/lib/fetch.js
+@@ -18,7 +18,7 @@ const getAllBlocks = ({ url, token, limit, stack, chunkNumber, res, resolve, rej
+             "content-type": "application/json",
+             cookie: `token_v2=${token};`
+         },
+-        body: JSON.stringify(Object.assign({ limit, cursor: { stack }, chunkNumber }, body, { verticalColumns: false })),
++        body: JSON.stringify(Object.assign({ cursor: { stack }, chunkNumber }, body, { limit, verticalColumns: false })),
+         method: "POST"
+     })
+         .then(response => response.json())
