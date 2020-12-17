@@ -16,7 +16,7 @@ const notion = new Notion({
 });
 
 const extractPageIdFromUrl = (url: string) =>
-  toUUID(url.match(/notion\.so\/trackrecords\/(?:.+\-)?([0-9a-f]+)/)[1]);
+  toUUID(url.match(/notion\.so(?:\/[^/]+)?\/(?:.+\-)?([0-9a-f]+)/)[1]);
 
 // https://api.slack.com/reference/messaging/link-unfurling#slack_app_unfurling
 app.event("link_shared", async ({ event }) => {
@@ -24,47 +24,45 @@ app.event("link_shared", async ({ event }) => {
   const unfurls: { [url: string]: { blocks: KnownBlock[] } } = {};
 
   await Promise.all(
-    event.links
-      .filter(({ url }) => /notion\.so\/trackrecords\//.test(url))
-      .map(async ({ url }) => {
-        const id = extractPageIdFromUrl(url);
-        const page = await notion.getPageById(id);
-        if (!page.Attributes) return;
-        const { title, teaser, cover } = page.Attributes;
-        const blocks: KnownBlock[] = [
-          {
-            type: "header",
-            text: {
-              type: "plain_text",
-              text: title,
-              emoji: true,
-            },
+    event.links.map(async ({ url }) => {
+      const id = extractPageIdFromUrl(url);
+      const page = await notion.getPageById(id);
+      if (!page.Attributes) return;
+      const { title, teaser, cover } = page.Attributes;
+      const blocks: KnownBlock[] = [
+        {
+          type: "header",
+          text: {
+            type: "plain_text",
+            text: title,
+            emoji: true,
           },
-        ];
-        if (cover) {
-          blocks.push({
-            type: "section",
-            text: {
-              type: "mrkdwn",
-              text: teaser,
-            },
-            accessory: {
-              type: "image",
-              image_url: cover,
-              alt_text: title,
-            },
-          });
-        } else {
-          blocks.push({
-            type: "section",
-            text: {
-              type: "mrkdwn",
-              text: teaser,
-            },
-          });
-        }
-        unfurls[url] = { blocks };
-      })
+        },
+      ];
+      if (cover) {
+        blocks.push({
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: teaser,
+          },
+          accessory: {
+            type: "image",
+            image_url: cover,
+            alt_text: title,
+          },
+        });
+      } else {
+        blocks.push({
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: teaser,
+          },
+        });
+      }
+      unfurls[url] = { blocks };
+    })
   );
 
   await app.client.chat.unfurl({
