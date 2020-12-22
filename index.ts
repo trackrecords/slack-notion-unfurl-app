@@ -62,6 +62,15 @@ app.event("link_shared", async ({ event }) => {
           });
         }
       }
+      blocks.push({
+        type: "context",
+        elements: [
+          {
+            type: "mrkdwn",
+            text: `Open via <${url.replace(/^https/, "notion")}|Notion App>`,
+          },
+        ],
+      });
       unfurls[url] = { blocks };
     })
   );
