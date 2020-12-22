@@ -20,7 +20,6 @@ const extractPageIdFromUrl = (url: string) =>
 
 // https://api.slack.com/reference/messaging/link-unfurling#slack_app_unfurling
 app.event("link_shared", async ({ event }) => {
-  console.dir(event);
   const unfurls: { [url: string]: { blocks: KnownBlock[] } } = {};
 
   await Promise.all(
@@ -39,27 +38,29 @@ app.event("link_shared", async ({ event }) => {
           },
         },
       ];
-      if (cover) {
-        blocks.push({
-          type: "section",
-          text: {
-            type: "mrkdwn",
-            text: teaser,
-          },
-          accessory: {
-            type: "image",
-            image_url: cover,
-            alt_text: title,
-          },
-        });
-      } else {
-        blocks.push({
-          type: "section",
-          text: {
-            type: "mrkdwn",
-            text: teaser,
-          },
-        });
+      if (teaser) {
+        if (cover) {
+          blocks.push({
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: teaser,
+            },
+            accessory: {
+              type: "image",
+              image_url: cover,
+              alt_text: title,
+            },
+          });
+        } else {
+          blocks.push({
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: teaser,
+            },
+          });
+        }
       }
       unfurls[url] = { blocks };
     })
