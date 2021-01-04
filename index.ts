@@ -33,7 +33,7 @@ app.event("link_shared", async ({ event }) => {
           type: "header",
           text: {
             type: "plain_text",
-            text: title,
+            text: title || "Notion",
             emoji: true,
           },
         },
