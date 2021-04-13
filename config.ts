@@ -17,5 +17,6 @@ export namespace Config {
     export const APP_TOKEN: string = process.env.SLACK_APP_TOKEN!;
     export const SIGNING_SECRET: string = process.env.SLACK_SIGNING_SECRET!;
     export const PORT: number = Number(process.env.PORT) || 5000;
+    export const SOCKET_MODE: boolean = !!process.env.SOCKET_MODE || false;
   }
 }

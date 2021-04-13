@@ -85,6 +85,13 @@ app.event("link_shared", async ({ event }) => {
 });
 
 (async () => {
-  await app.start(Config.Slack.PORT);
-  console.log(`⚡️️ Notion Unfurl app is running! PORT is ${Config.Slack.PORT}`);
+  if (Config.Slack.SOCKET_MODE) {
+    await app.start();
+    console.log(`⚡️️ Notion Unfurl app is running!`);
+  } else {
+    await app.start(Config.Slack.PORT);
+    console.log(
+      `⚡️️ Notion Unfurl app is running! PORT is ${Config.Slack.PORT}`
+    );
+  }
 })();
