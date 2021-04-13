@@ -17,7 +17,8 @@
 
    - `links:read`
    - `links:write`
-1. `Socket Mode` に移動、`Enable Socket Mode` をオンに
+1. `Socket Mode` に移動、`Enable Socket Mode` をオンに FYI: [Slack ソケットモードの最も簡単な始め方
+](https://qiita.com/seratch/items/1a460c08c3e245b56441)
 
 1. `Install App` に移動、 `Install to Workspace` ボタンからアプリをインストール
 
