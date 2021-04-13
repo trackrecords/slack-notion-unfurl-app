@@ -6,15 +6,19 @@
   "author": "Masayuki Uehara <munky69rock@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@slack/bolt": "^2.3.0",
+    "@slack/bolt": "^3.3.0",
+    "dotenv": "^8.2.0",
     "notion-api-js": "^2.3.4",
     "to-uuid": "^0.1.3",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.2"
   },
   "scripts": {
-    "postinstall": "patch-package",
-    "start": "ts-node index.ts"
+    "postinstall": "yarn build",
+    "postinstall: patch": "patch-package",
+    "start": "node lib/index.js",
+    "start:dev": "ts-node src/index.ts",
+    "build": "tsc -p ."
   },
   "devDependencies": {
     "patch-package": "^6.2.2"
