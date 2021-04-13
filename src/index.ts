@@ -17,7 +17,8 @@ const notion = new Notion({
 });
 
 const extractPageIdFromUrl = (url: string) =>
-  toUUID(url.match(/notion\.so(?:\/[^/]+)?\/(?:.+\-)?([0-9a-f]+)/)[1]);
+  // @ts-ignore
+  toUUID(url?.match(/notion\.so(?:\/[^/]+)?\/(?:.+\-)?([0-9a-f]+)/)[1]);
 
 // FYI: https://api.slack.com/reference/messaging/link-unfurling#slack_app_unfurling
 app.event("link_shared", async ({ event }) => {
@@ -25,7 +26,7 @@ app.event("link_shared", async ({ event }) => {
 
   await Promise.all(
     event.links.map(async ({ url }) => {
-      const id = extractPageIdFromUrl(url);
+      const id = extractPageIdFromUrl(url!);
       const page = await notion.getPageById(id);
       if (!page.Attributes) return;
       const { title, teaser, cover } = page.Attributes;
@@ -50,7 +51,7 @@ app.event("link_shared", async ({ event }) => {
             accessory: {
               type: "image",
               image_url: cover,
-              alt_text: title,
+              alt_text: title!,
             },
           });
         } else {
