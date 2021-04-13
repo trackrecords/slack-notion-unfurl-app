@@ -14,8 +14,11 @@
     "typescript": "^4.0.2"
   },
   "scripts": {
-    "postinstall": "patch-package",
-    "start": "ts-node index.ts"
+    "postinstall": "yarn build",
+    "postinstall: patch": "patch-package",
+    "start": "node lib/index.js",
+    "start:dev": "ts-node src/index.ts",
+    "build": "tsc -p ."
   },
   "devDependencies": {
     "patch-package": "^6.2.2"
