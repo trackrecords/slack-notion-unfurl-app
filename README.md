@@ -28,19 +28,20 @@
 
    - 参考: [トークンの取得方法 / How to get your token](https://www.notion.so/How-to-get-your-token-d7a3421b851f406380fb9ff429cd5d47)
 
-1. コピーしていたものを環境変数としてセット
+1. コピーしていたものを環境変数としてセット *(.env を使う際は `cp _env .env` 後に値をセット)*
 
    - `SLACK_BOT_TOKEN`: `Bot User OAuth Access Token`
    - `SLACK_SIGNING_SECRET`: `Signing Secret`
+   - `SLACK_APP_TOKEN`: `Socket Mode`
    - `NOTION_TOKEN`: 上記で取得した Notion の token
 
 1. bot の起動
 
    ```
-   yarn start
+   yarn build && yarn start
    ```
 
-1. bot へのリクエストの forward
+1. bot へのリクエストの forward (Socket Mode ではない場合のみ)
 
    - [ngrok](https://ngrok.com/) などを利用
      ```
@@ -48,7 +49,7 @@
      ```
      `https://xxxxxxxxxxxx.ngrok.io` のような URL が発行されるためそれをコピーしておく
 
-1. 再び Slack アプリの設定画面に戻り `Event Subscriptions` に移動、チェックボックスを有効化して以下の設定を追加
+1. 再び Slack アプリの設定画面に戻り `Event Subscriptions` に移動、チェックボックスを有効化して以下の設定を追加 (Socket Mode ではない場合のみ)
 
     - `Request URL` に ngrok などが発行した URL + `/slack/events` を入力 (例: https://xxxxxxxxxxxx.ngrok.io/slack/events)
     - `Subscribe to bot events` に `link_shared` を追加
