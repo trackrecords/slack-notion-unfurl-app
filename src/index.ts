@@ -8,7 +8,6 @@ const app = new App({
   token: Config.Slack.BOT_TOKEN,
   appToken: Config.Slack.APP_TOKEN,
   socketMode: true,
-  processBeforeResponse: true,
 });
 
 const notion = new Notion({
@@ -92,7 +91,7 @@ app.event("link_shared", async ({ event }) => {
   } else {
     await app.start(Config.Slack.PORT);
     console.log(
-      `⚡️️ Notion Unfurl app is running! PORT is ${Config.Slack.PORT}`
+      `⚡️️ Notion Unfurl app is running on PORT: ${Config.Slack.PORT}!`
     );
   }
 })();
