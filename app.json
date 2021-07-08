@@ -29,8 +29,9 @@
       "value": "xapp-************-************-************************"
     },
     "PORT": {
-      "description": "listen port number",
-      "value": "5000"
+      "description": "listen port number. if you use socket mode, this is not necessary.",
+      "value": "5000",
+      "required": false
     }
   },
   "image": "heroku/nodejs"
