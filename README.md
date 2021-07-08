@@ -1,6 +1,6 @@
 # Notion Unfurl bot
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/trackrecords/slack-notion-unfurl-app/tree/master)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/75asa/slack-notion-unfurl-app/tree/master{:target="_blank"})
 
 ## 手順
 
@@ -12,6 +12,8 @@
    ```
 
 1. http://api.slack.com/apps?new_app=1 にアクセスして Slack アプリの作成
+   - *manifest.yaml の内容をコピーすると以降の手順を省略可能*
+   - FYI: [Create and configure apps with manifests](https://api.slack.com/reference/manifests)
 1. `App Credentials` の `Signing Secret` をコピーしておく
 1. `OAuth % Permissions` に移動、 `Bot Token Scopes` に以下を追加
 
@@ -56,5 +58,3 @@
     - `App unfurl domains` に `notion.so` を追加
 
 1. 再インストールする旨のバナーが出てくるのでリンクから再インストールの実行
-
-1. Notion Unfurl bot を有効化したい チャンネルに bot を invite
