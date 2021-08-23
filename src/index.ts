@@ -1,30 +1,30 @@
 import { App, KnownBlock } from "@slack/bolt";
 import Notion from "notion-api-js";
 import { toUUID } from "to-uuid";
-
-const notionToken: string = process.env.NOTION_TOKEN!;
-const botToken: string = process.env.SLACK_BOT_TOKEN!;
+import { Config } from "./config";
 
 const app = new App({
-  signingSecret: process.env.SLACK_SIGNING_SECRET,
-  token: botToken,
+  signingSecret: Config.Slack.SIGNING_SECRET,
+  token: Config.Slack.BOT_TOKEN,
+  appToken: Config.Slack.APP_TOKEN,
+  socketMode: true,
 });
 
 const notion = new Notion({
-  token: notionToken,
+  token: Config.Notion.TOKEN,
   options: {},
 });
 
 const extractPageIdFromUrl = (url: string) =>
-  toUUID(url.match(/notion\.so(?:\/[^/]+)?\/(?:.+\-)?([0-9a-f]+)/)[1]);
+  toUUID(url!.match(/notion\.so(?:\/[^/]+)?\/(?:.+\-)?([0-9a-f]+)/)![1]);
 
-// https://api.slack.com/reference/messaging/link-unfurling#slack_app_unfurling
+// FYI: https://api.slack.com/reference/messaging/link-unfurling#slack_app_unfurling
 app.event("link_shared", async ({ event }) => {
   const unfurls: { [url: string]: { blocks: KnownBlock[] } } = {};
 
   await Promise.all(
     event.links.map(async ({ url }) => {
-      const id = extractPageIdFromUrl(url);
+      const id = extractPageIdFromUrl(url!);
       const page = await notion.getPageById(id);
       if (!page.Attributes) return;
       const { title, teaser, cover } = page.Attributes;
@@ -49,7 +49,7 @@ app.event("link_shared", async ({ event }) => {
             accessory: {
               type: "image",
               image_url: cover,
-              alt_text: title,
+              alt_text: title!,
             },
           });
         } else {
@@ -76,7 +76,7 @@ app.event("link_shared", async ({ event }) => {
   );
 
   await app.client.chat.unfurl({
-    token: botToken,
+    token: Config.Slack.BOT_TOKEN,
     channel: event.channel,
     ts: event.message_ts,
     unfurls,
@@ -84,6 +84,13 @@ app.event("link_shared", async ({ event }) => {
 });
 
 (async () => {
-  await app.start(process.env.PORT || 3000);
-  console.log("⚡️ Notion Unfurl app is running!");
+  if (Config.Slack.SOCKET_MODE) {
+    await app.start();
+    console.log(`⚡️️ Notion Unfurl app is running!`);
+  } else {
+    await app.start(Config.Slack.PORT);
+    console.log(
+      `⚡️️ Notion Unfurl app is running on PORT: ${Config.Slack.PORT}!`
+    );
+  }
 })();

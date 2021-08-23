@@ -1,0 +1,39 @@
+{
+  "name": "slack-notion-unfurl-bot",
+  "description": "slack x notion",
+  "repository": "https://github.com/trackrecords/slack-notion-unfurl-bot",
+  "keywords": [
+    "Slack",
+    "Slack API",
+    "Bolt",
+    "TypeScript",
+    "Heroku",
+    "Notion",
+    "Notion API"
+  ],
+  "env": {
+    "NOTION_TOKEN": {
+      "description": "Notion personal token FYI: https://www.notion.so/How-to-get-your-token-d7a3421b851f406380fb9ff429cd5d47",
+      "value": "xxxx"
+    },
+    "SLACK_SIGNING_SECRET": {
+      "description": "Slack Signing Secret - https://api.slack.com/apps",
+      "value": "cda6e9cbf46a********************"
+    },
+    "SLACK_BOT_TOKEN": {
+      "description": "Slack App Bot Token - https://api.slack.com/apps",
+      "value": "xoxb-************-************-************************"
+    },
+    "SLACK_APP_TOKEN": {
+      "description": "Slack App Socket Token - https://api.slack.com/apps",
+      "value": "xapp-************-************-************************"
+    },
+    "PORT": {
+      "description": "listen port number. if you use socket mode, this is not necessary.",
+      "value": "5000",
+      "required": false
+    },
+    "YARN_PRODUCTION": false
+  },
+  "image": "heroku/nodejs"
+}
