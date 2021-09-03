@@ -16,12 +16,13 @@ const notion = new Notion({
 });
 
 const extractPageIdFromUrl = (url: string) =>
-  // @ts-ignore
-  toUUID(url!.match(/notion\.so(?:\/[^/]+)?\/(?:.+\-)?([0-9a-f]+)/)[1]);
+  toUUID(url!.match(/notion\.so(?:\/[^/]+)?\/(?:.+\-)?([0-9a-f]+)/)![1]);
 
 // FYI: https://api.slack.com/reference/messaging/link-unfurling#slack_app_unfurling
 app.event("link_shared", async ({ event }) => {
   const unfurls: { [url: string]: { blocks: KnownBlock[] } } = {};
+
+  console.dir({ event }, { depth: null });
 
   await Promise.all(
     event.links.map(async ({ url }) => {
@@ -76,12 +77,18 @@ app.event("link_shared", async ({ event }) => {
     })
   );
 
-  await app.client.chat.unfurl({
-    token: Config.Slack.BOT_TOKEN,
-    channel: event.channel,
-    ts: event.message_ts,
-    unfurls,
-  });
+  console.dir({ unfurls }, { depth: null });
+
+  await app.client.chat
+    .unfurl({
+      token: Config.Slack.BOT_TOKEN,
+      channel: event.channel,
+      ts: event.message_ts,
+      unfurls,
+    })
+    .catch(err => {
+      console.dir({ err }, { depth: null });
+    });
 });
 
 (async () => {

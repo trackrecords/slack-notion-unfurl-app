@@ -11,6 +11,8 @@ if (config) {
 export namespace Config {
   export namespace Notion {
     export const TOKEN: string = process.env.NOTION_TOKEN!;
+    export const WORKSPACE_NAME: string =
+      process.env.NOTION_WORKSPACE_NAME || "";
   }
   export namespace Slack {
     export const BOT_TOKEN: string = process.env.SLACK_BOT_TOKEN!;

@@ -32,7 +32,8 @@
       "description": "listen port number. if you use socket mode, this is not necessary.",
       "value": "5000",
       "required": false
-    }
+    },
+    "YARN_PRODUCTION": false
   },
   "image": "heroku/nodejs"
 }
