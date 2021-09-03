@@ -22,6 +22,8 @@ const extractPageIdFromUrl = (url: string) =>
 app.event("link_shared", async ({ event }) => {
   const unfurls: { [url: string]: { blocks: KnownBlock[] } } = {};
 
+  console.dir({ event }, { depth: null });
+
   await Promise.all(
     event.links.map(async ({ url }) => {
       const id = extractPageIdFromUrl(url!);
@@ -75,12 +77,18 @@ app.event("link_shared", async ({ event }) => {
     })
   );
 
-  await app.client.chat.unfurl({
-    token: Config.Slack.BOT_TOKEN,
-    channel: event.channel,
-    ts: event.message_ts,
-    unfurls,
-  });
+  console.dir({ unfurls }, { depth: null });
+
+  await app.client.chat
+    .unfurl({
+      token: Config.Slack.BOT_TOKEN,
+      channel: event.channel,
+      ts: event.message_ts,
+      unfurls,
+    })
+    .catch(err => {
+      console.dir({ err }, { depth: null });
+    });
 });
 
 (async () => {
