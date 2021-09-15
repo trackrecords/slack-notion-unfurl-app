@@ -17,10 +17,12 @@
     "postinstall": "yarn build",
     "postinstall: patch": "patch-package",
     "start": "node lib/index.js",
-    "start:dev": "ts-node src/index.ts",
+    "dev": "ts-node src/index.ts",
+    "dev:watch": "ts-node-dev --respawn src/index.ts",
     "build": "tsc -p ."
   },
   "devDependencies": {
-    "patch-package": "^6.2.2"
+    "patch-package": "^6.2.2",
+    "ts-node-dev": "^1.1.8"
   }
 }
